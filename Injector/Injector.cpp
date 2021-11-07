@@ -4,15 +4,6 @@
 using namespace std;
 int main()
 {
-    if (0)
-    {
-        Sleep(5000);
-        WCHAR buf[256];
-        GetClassName(GetForegroundWindow(), buf, 256);
-        wcout << buf << endl;
-        return 0;
-    }
-
     cout << "AcrylicMenus v0.1 Preview" << endl << "https://github.com/krlvm/AcrylicMenus" << endl << "(c) krlvm, 2021" << endl << endl;
 
     cout << "Installing hook... ";
