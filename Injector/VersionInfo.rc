@@ -17,11 +17,11 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "krlvm"
-            VALUE "FileDescription", "AcrylicMenus Hook DLL"
+            VALUE "FileDescription", "AcrylicMenus Hook Injector"
             VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "HookDLL"
+            VALUE "InternalName", "Injector"
             VALUE "LegalCopyright", "Copyright krlvm (C) 2021"
-            VALUE "OriginalFilename", "HookDLL.dll"
+            VALUE "OriginalFilename", "Injector.exe"
             VALUE "ProductName", "AcrylicMenus"
             VALUE "ProductVersion", "1.0.0.0"
         END
