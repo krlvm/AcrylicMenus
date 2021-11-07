@@ -18,12 +18,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "krlvm"
             VALUE "FileDescription", "AcrylicMenus Hook DLL"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "0.2.0.0"
             VALUE "InternalName", "HookDLL"
             VALUE "LegalCopyright", "Copyright krlvm (C) 2021"
             VALUE "OriginalFilename", "HookDLL.dll"
             VALUE "ProductName", "AcrylicMenus"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "0.2.0.0"
         END
     END
     BLOCK "VarFileInfo"

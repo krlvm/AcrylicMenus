@@ -4,7 +4,7 @@
 using namespace std;
 int main()
 {
-    cout << "AcrylicMenus v0.1 Preview" << endl << "https://github.com/krlvm/AcrylicMenus" << endl << "(c) krlvm, 2021" << endl << endl;
+    cout << "AcrylicMenus v0.2 Preview" << endl << "https://github.com/krlvm/AcrylicMenus" << endl << "(c) krlvm, 2021" << endl << endl;
 
     cout << "Installing hook... ";
 
