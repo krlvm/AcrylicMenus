@@ -48,9 +48,6 @@ DWORD WINAPI HandleMenu(LPVOID lpParameter)
     HWND hwnd = (HWND)lpParameter;
 
     int bIsExplorerDark = bIsExplorer && IsExplorerDarkTheme();
-    //wchar_t buffer[256];
-    //wsprintfW(buffer, L"%d", bIsExplorerDark);
-    //MessageBox(NULL, buffer, L"bIsExplorerDARK", MB_OK);
 
 	SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_NOREDIRECTIONBITMAP);
     SetLayeredWindowAttributes(hwnd, bIsExplorer ? (bIsExplorerDark ? EXPLORER_COLORKEY_DARK : EXPLORER_COLORKEY) : CONTEXTM_COLORKEY, 0, LWA_COLORKEY);
@@ -93,7 +90,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         WCHAR exePath[MAX_PATH + 1];
         DWORD len = GetModuleFileNameW(NULL, exePath, MAX_PATH);
         //MessageBox(NULL, exePath, L"bIsExplorer", MB_OK);
-        if (len > 0 && wcscmp(exePath, L"C:\\Windows\\explorer.exe") == 0) {
+        if (len > 0 && _wcsicmp(exePath, L"c:\\windows\\explorer.exe") == 0) {
             bIsExplorer = TRUE;
             RegOpenKeyEx(
                 HKEY_CURRENT_USER,
