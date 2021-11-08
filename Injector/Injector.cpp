@@ -16,8 +16,7 @@ int main()
         return 1;
     }
     
-    // dumpbin /exports HookDLL.dll
-    HOOKPROC hHookProc = (HOOKPROC)GetProcAddress(hDLL, "?CallWndProc@@YA_JH_K_J@Z");
+    HOOKPROC hHookProc = (HOOKPROC)GetProcAddress(hDLL, "CallWndProc");
 
     if (!hHookProc)
     {
