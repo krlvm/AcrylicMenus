@@ -34,7 +34,7 @@ public:
 			SetWindowCompositionAttribute = (pSetWindowCompositionAttribute)GetProcAddress(hModule, "SetWindowCompositionAttribute");
 		}
 
-		ACCENTPOLICY policy = { 4, 2, (nOpacity << 24) | (nTintColor & 0xFFFFFF), 0 };
+		ACCENTPOLICY policy = { 4, 0x20 | 0x40 | 0x80 | 0x100, (nOpacity << 24) | (nTintColor & 0xFFFFFF), 0 };
 		WINCOMPATTRDATA data = { 19, &policy, sizeof(ACCENTPOLICY) };
 		SetWindowCompositionAttribute(hwnd, &data);
 	}

@@ -7,6 +7,7 @@
 
 #ifdef WINDOWS_11
 #define ACRYLIC_OPACITY 152
+#define ACRYLIC_OPACITY_DARK 172
 #define DELAY_TIME 160
 #define CONTEXTM_COLORKEY RGB(249, 249, 249)
 #define EXPLORER_COLORKEY CONTEXTM_COLORKEY
@@ -16,13 +17,14 @@
 #define EXPLORER_TINT_DARK 0x2B2B2B
 #else
 #define ACRYLIC_OPACITY 192
-#define DELAY_TIME 160
+#define ACRYLIC_OPACITY_DARK 212
+#define DELAY_TIME 0
 #define CONTEXTM_COLORKEY RGB(242, 242, 242)
 #define CONTEXTM_TINT 0xEEEEEE
 #define EXPLORER_COLORKEY RGB(238, 238, 238)
 #define EXPLORER_TINT 0xEEEEEE
 #define EXPLORER_COLORKEY_DARK RGB(43, 43, 43)
-#define EXPLORER_TINT_DARK 0x2B2B2B
+#define EXPLORER_TINT_DARK 0x000000
 #endif
 
 BOOL bIsExplorer = FALSE;
@@ -50,9 +52,13 @@ DWORD WINAPI HandleMenu(LPVOID lpParameter)
 
     Sleep(DELAY_TIME);
 
-	SetWindowLongPtr(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_NOREDIRECTIONBITMAP);
-    SetLayeredWindowAttributes(hwnd, bIsExplorer ? (bIsExplorerDark ? EXPLORER_COLORKEY_DARK : EXPLORER_COLORKEY) : CONTEXTM_COLORKEY, 0, LWA_COLORKEY);
-    AcrylicHelper::ApplyAcrylic(hwnd, ACRYLIC_OPACITY, bIsExplorer ? (bIsExplorerDark ? EXPLORER_TINT_DARK : EXPLORER_TINT) : CONTEXTM_TINT);
+	//SetWindowLongPtr(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_NOREDIRECTIONBITMAP);
+    //SetLayeredWindowAttributes(hwnd, bIsExplorer ? (bIsExplorerDark ? EXPLORER_COLORKEY_DARK : EXPLORER_COLORKEY) : CONTEXTM_COLORKEY, 0, LWA_COLORKEY);
+    AcrylicHelper::ApplyAcrylic(
+        hwnd,
+        bIsExplorer ? (bIsExplorerDark ? ACRYLIC_OPACITY_DARK : ACRYLIC_OPACITY) : ACRYLIC_OPACITY,
+        bIsExplorer ? (bIsExplorerDark ? EXPLORER_TINT_DARK : EXPLORER_TINT) : CONTEXTM_TINT
+    );
 
     ExitThread(0);
 }

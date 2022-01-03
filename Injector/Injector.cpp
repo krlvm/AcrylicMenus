@@ -1,10 +1,16 @@
 #include <iostream>
 #include <Windows.h>
 
+#include "ThemeHelper.h"
+
 using namespace std;
 int main()
 {
     cout << "AcrylicMenus v0.2 Preview" << endl << "https://github.com/krlvm/AcrylicMenus" << endl << "(c) krlvm, 2021" << endl << endl;
+
+    cout << "Applying visual styles changes..." << endl;
+
+    ApplyThemeAlpha();
 
     cout << "Installing hook... ";
 
@@ -42,6 +48,8 @@ int main()
 
     system("PAUSE");
 
+    cout << "Unhooking..." << endl;
+    
     UnhookWindowsHookEx(hHook);
     FreeLibrary(hDLL);
     SendMessageTimeout(HWND_BROADCAST, WM_NULL, 0, 0, SMTO_ABORTIFHUNG | SMTO_NOTIMEOUTIFNOTHUNG, 1000, NULL);

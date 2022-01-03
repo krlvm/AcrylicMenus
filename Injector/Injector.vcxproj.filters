@@ -23,6 +23,9 @@
     <ClInclude Include="..\HookDLL\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ThemeHelper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VersionInfo.rc">
