@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dd8ce104-5003-4c5a-b0fa-ab9ac2e91104}</ProjectGuid>
-    <RootNamespace>Injector</RootNamespace>
+    <ProjectGuid>{fd755b75-9f8c-4974-87a8-a649a7bcc39f}</ProjectGuid>
+    <RootNamespace>AcrylicMenus</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Injector.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ThemeHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\HookDLL\resource.h" />
+    <ClInclude Include="AcrylicHelper.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ThemeHelper.h" />
   </ItemGroup>
   <ItemGroup>

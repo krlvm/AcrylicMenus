@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Injector", "Injector\Injector.vcxproj", "{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HookDLL", "HookDLL\HookDLL.vcxproj", "{EEE97587-E526-4E8B-827F-710EBC45D987}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcrylicMenus", "AcrylicMenus\AcrylicMenus\AcrylicMenus.vcxproj", "{FD755B75-9F8C-4974-87A8-A649A7BCC39F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,22 +13,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Debug|x64.ActiveCfg = Debug|x64
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Debug|x64.Build.0 = Debug|x64
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Debug|x86.ActiveCfg = Debug|Win32
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Debug|x86.Build.0 = Debug|Win32
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Release|x64.ActiveCfg = Release|x64
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Release|x64.Build.0 = Release|x64
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Release|x86.ActiveCfg = Release|Win32
-		{DD8CE104-5003-4C5A-B0FA-AB9AC2E91104}.Release|x86.Build.0 = Release|Win32
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Debug|x64.ActiveCfg = Debug|x64
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Debug|x64.Build.0 = Debug|x64
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Debug|x86.ActiveCfg = Debug|Win32
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Debug|x86.Build.0 = Debug|Win32
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Release|x64.ActiveCfg = Release|x64
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Release|x64.Build.0 = Release|x64
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Release|x86.ActiveCfg = Release|Win32
-		{EEE97587-E526-4E8B-827F-710EBC45D987}.Release|x86.Build.0 = Release|Win32
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Debug|x64.ActiveCfg = Debug|x64
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Debug|x64.Build.0 = Debug|x64
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Debug|x86.ActiveCfg = Debug|Win32
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Debug|x86.Build.0 = Debug|Win32
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Release|x64.ActiveCfg = Release|x64
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Release|x64.Build.0 = Release|x64
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Release|x86.ActiveCfg = Release|Win32
+		{FD755B75-9F8C-4974-87A8-A649A7BCC39F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

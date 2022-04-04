@@ -2,8 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by VersionInfo.rc
 //
-#define VS_VERSION_INFO                 1
-#define IDC_STATIC                      -1
 
 // Next default values for new objects
 // 
