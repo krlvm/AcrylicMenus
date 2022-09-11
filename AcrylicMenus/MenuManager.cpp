@@ -36,26 +36,34 @@ void MenuManager::SetCurrentMenu(HWND hWnd)
 
 void MenuManager::RefreshCurrentMenuBackground(bool bIsDarkMode, DWORD dwBkColor)
 {
+	bool bDarkModeChanged = g_bIsDarkMode != bIsDarkMode;
+
 	if (ACRYLIC_TINT_AUTO)
 	{
 		if (dwBkColor)
 		{
 			g_dwBkColor = dwBkColor;
 			g_bBkColorRefresh = true;
+
+			// Request acrylic tint reapplying
+			bDarkModeChanged = true;
 		}
-		else
+		else if (bDarkModeChanged)
 		{
 			ThemeHelper::GetMenuFillColor(
-				g_bIsDarkMode ? L"ImmersiveStartDark::Menu" : L"ImmersiveStart::Menu",
+				bIsDarkMode ? L"ImmersiveStartDark::Menu" : L"ImmersiveStart::Menu",
 				&g_dwBkColor
 			);
 		}
 	}
-	if (g_bIsDarkMode != bIsDarkMode)
+
+	if (!bDarkModeChanged)
 	{
-		ApplyAcrylicEffect();
+		return;
 	}
+
 	g_bIsDarkMode = bIsDarkMode;
+	ApplyAcrylicEffect();
 }
 
 void ApplyAcrylicEffect()
