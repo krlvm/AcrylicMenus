@@ -26,7 +26,9 @@ void MenuManager::SetCurrentMenu(HWND hWnd)
 	}
 	else if (!g_bBkColorRefresh)
 	{
-		RefreshCurrentMenuBackground(ThemeHelper::IsMenuUseDarkMode(hWnd), NULL);
+		bool bIsDark = ThemeHelper::IsMenuUseDarkMode(hWnd);
+		RefreshCurrentMenuBackground(bIsDark, bIsDark ? ACRYLIC_TINT_DARK : ACRYLIC_TINT_LIGHT);
+		g_bBkColorRefresh = false;
 	}
 
 	g_hWnd = hWnd;
