@@ -25,8 +25,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,1,0
- PRODUCTVERSION 1,0,1,0
+ FILEVERSION 1,0,2,0
+ PRODUCTVERSION 1,0,2,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -43,12 +43,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "ALTaleX531, Maplespe, krlvm"
             VALUE "FileDescription", "AcrylicMenus Hook DLL"
-            VALUE "FileVersion", "1.0.1.0"
+            VALUE "FileVersion", "1.0.2.0"
             VALUE "InternalName", "AcrylicMenus.dll"
             VALUE "LegalCopyright", "Copyright (C) ALTaleX531, Maplespe, 2022, krlvm 2021-2022"
             VALUE "OriginalFilename", "AcrylicMenus.dll"
             VALUE "ProductName", "AcrylicMenus"
-            VALUE "ProductVersion", "1.0.1.0"
+            VALUE "ProductVersion", "1.0.2.0"
         END
     END
     BLOCK "VarFileInfo"
