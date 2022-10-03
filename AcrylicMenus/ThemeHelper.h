@@ -8,8 +8,8 @@ namespace ThemeHelper
 	// Windows 11 22H2+
 	enum MENUPARTSEX
 	{
-		MENU_POPUPBACKGROUND_INTERNAL = 26,
-		MENU_POPUPITEM_INTERNAL = 27
+		MENU_POPUPITEMKBFOCUS = 26,
+		MENU_POPUPITEM_FOCUSABLE = 27
 	};
 
 	typedef HRESULT(WINAPI*pfnGetThemeClass)(HTHEME hTheme, LPCTSTR pszClassName, int cchClassName);
@@ -193,29 +193,30 @@ namespace ThemeHelper
 	    T&& t,
 	    BYTE dwOpacity = 255,
 	    DWORD dwFlag = BPPF_ERASE,
-	    BOOL bUpdateTarget = TRUE
+	    BOOL bUpdateTarget = TRUE,
+		BOOL bUseBlendFunction = TRUE
 	)
 	{
 		HDC hMemDC = nullptr;
-		BLENDFUNCTION pBlend = {AC_SRC_OVER, 0, dwOpacity, AC_SRC_ALPHA};
-		BP_PAINTPARAMS ppPaint = {sizeof(BP_PAINTPARAMS), dwFlag, nullptr, &pBlend };
-		HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdc, Rect, BPBF_TOPDOWNDIB, &ppPaint, &hMemDC);
-		if (hPaintBuffer and hMemDC)
-		{
-			SetLayout(hMemDC, GetLayout(hdc));
-			SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_FONT));
-			SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_BRUSH));
-			SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_PEN));
-			SetTextAlign(hMemDC, GetTextAlign(hdc));
-
-			t(hMemDC, hPaintBuffer);
-
-			EndBufferedPaint(hPaintBuffer, TRUE);
-
-			return TRUE;
-		}
+		BLENDFUNCTION BlendFunction = { AC_SRC_OVER, 0, dwOpacity, AC_SRC_ALPHA };
+		BP_PAINTPARAMS PaintParams = { sizeof(BP_PAINTPARAMS), dwFlag, nullptr, bUseBlendFunction ? &BlendFunction : nullptr };
+		HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdc, Rect, BPBF_TOPDOWNDIB, &PaintParams, &hMemDC);
 		
-		return FALSE;
+		if (!hPaintBuffer || !hMemDC)
+		{
+			return FALSE;
+		}
+
+		SetLayout(hMemDC, GetLayout(hdc));
+		SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_FONT));
+		SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_BRUSH));
+		SelectObject(hMemDC, GetCurrentObject(hdc, OBJ_PEN));
+		SetTextAlign(hMemDC, GetTextAlign(hdc));
+
+		t(hMemDC, hPaintBuffer);
+		EndBufferedPaint(hPaintBuffer, bUpdateTarget);
+
+		return TRUE;
 	}
 
 	template <typename T>

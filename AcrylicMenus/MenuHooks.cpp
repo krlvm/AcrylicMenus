@@ -54,17 +54,6 @@ bool VerifyThemeBackgroundTransparency(HDC hdc, HTHEME hTheme, int iPartId, int 
 {
 	RECT rc = { 0, 0, 1, 1 };
 	bool bResult = false;
-
-	auto verify = [&](int y, int x, RGBQUAD* pRGBAInfo)
-	{
-		if (pRGBAInfo->rgbReserved != 0xFF)
-		{
-			bResult = true;
-			return false;
-		}
-		return true;
-	};
-
 	auto f = [&](HDC hMemDC, HPAINTBUFFER hPaintBuffer)
 	{
 		HRESULT hr = DrawThemeBackgroundHook.OldFunction<decltype(MyDrawThemeBackground)>(
@@ -75,15 +64,30 @@ bool VerifyThemeBackgroundTransparency(HDC hdc, HTHEME hTheme, int iPartId, int 
 			&rc,
 			nullptr
 		);
-		//GdiFlush();
 
 		if (SUCCEEDED(hr))
 		{
+			auto verify = [&](int y, int x, RGBQUAD* pRGBAInfo)
+			{
+				if (pRGBAInfo->rgbReserved != 0xFF)
+				{
+					bResult = true;
+					return false;
+				}
+				return true;
+			};
+
 			BufferedPaintWalkBits(hPaintBuffer, verify);
 		}
 	};
 
-	DoBufferedPaint(hdc, &rc, f, 0xFF, BPPF_ERASE | BPPF_NOCLIP, FALSE);
+	MARGINS mr = {};
+	if (SUCCEEDED(GetThemeMargins(hTheme, hdc, iPartId, iStateId, TMT_SIZINGMARGINS, nullptr, &mr)))
+	{
+		rc.right = max(mr.cxLeftWidth + mr.cxRightWidth, 1);
+		rc.bottom = max(mr.cyTopHeight + mr.cyBottomHeight, 1);
+	}
+	DoBufferedPaint(hdc, &rc, f, 0xFF, BPPF_ERASE | BPPF_NOCLIP, FALSE, FALSE);
 
 	return bResult;
 };
@@ -94,6 +98,13 @@ inline bool VerifyMenuTheme(HTHEME hTheme)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void DrawRoundedRect(HDC& hdc, const RECT& rcTarget, const HBRUSH& hBrush)
+{
+	HRGN hRgn = CreateRoundRectRgn(rcTarget.left, rcTarget.top, rcTarget.right + 1, rcTarget.bottom + 1, 8, 8);
+	FillRgn(hdc, hRgn, hBrush);
+	DeleteObject(hRgn);
+}
 
 HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 	HTHEME  hTheme,
@@ -115,15 +126,15 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 		}
 
 		if (
-			(iPartId == MENU_POPUPBACKGROUND || iPartId == MENU_POPUPBACKGROUND_INTERNAL) ||
-			(iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_INTERNAL) ||
+			iPartId == MENU_POPUPBACKGROUND ||
+			(iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_FOCUSABLE) ||
 			iPartId == MENU_POPUPGUTTER ||
 			iPartId == MENU_POPUPBORDERS
 		)
 		{
 			if (
-				(iPartId == MENU_POPUPBACKGROUND || iPartId == MENU_POPUPBACKGROUND_INTERNAL) ||
-				(iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_INTERNAL) ||
+				iPartId == MENU_POPUPBACKGROUND ||
+				(iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_FOCUSABLE) ||
 				(
 					!IsThemeBackgroundPartiallyTransparent(hTheme, iPartId, iStateId) ||
 					!VerifyThemeBackgroundTransparency(hdc, hTheme, iPartId, iStateId)
@@ -142,7 +153,7 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 					BufferedPaintSetAlpha(hPaintBuffer, &rc, 0xFF);
 				};
 
-				BYTE bOpacity = ((iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_INTERNAL) and iStateId == MPI_HOT) ?
+				BYTE bOpacity = ((iPartId == MENU_POPUPITEM || iPartId == MENU_POPUPITEM_FOCUSABLE) && iStateId == MPI_HOT) ?
 					(g_bIsDarkMode ? POPUP_HOVER_OPACITY_DARK : POPUP_HOVER_OPACITY_LIGHT) :
 					0;
 
@@ -177,6 +188,42 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 				}
 			}
 		}
+		else if (iPartId == MENU_POPUPITEMKBFOCUS)
+		{
+			HBRUSH hBrush = (HBRUSH) GetStockObject(g_bIsDarkMode ? WHITE_BRUSH : BLACK_BRUSH);
+
+			bool bSuccess = true;
+			RECT rcLine;
+
+			auto f = [&](HDC hMemDC, HPAINTBUFFER hPaintBuffer)
+			{
+				FillRect(hMemDC, &rcLine, hBrush);
+				BufferedPaintSetAlpha(hPaintBuffer, &rcLine, 0xFF);
+			};
+
+			Clear(hdc, &rc);
+			
+			// Top line
+			rcLine = { rc.left, rc.top, rc.right, rc.top + 1 };
+			bSuccess = bSuccess && DoBufferedPaint(hdc, &rcLine, f, 255, BPPF_ERASE);
+			
+			// Bottom line
+			rcLine = { rc.left, rc.bottom - 1, rc.right, rc.bottom };
+			bSuccess = bSuccess && DoBufferedPaint(hdc, &rcLine, f, 255, BPPF_ERASE);
+			
+			// Left line
+			rcLine = { rc.left, rc.top, rc.left + 1, rc.bottom };
+			bSuccess = bSuccess && DoBufferedPaint(hdc, &rcLine, f, 255, BPPF_ERASE);
+			
+			// Right line
+			rcLine = { rc.right - 1, rc.top, rc.right, rc.bottom };
+			bSuccess = bSuccess && DoBufferedPaint(hdc, &rcLine, f, 255, BPPF_ERASE);
+
+			if (bSuccess)
+			{
+				return hr;
+			}
+		}
 		else if (iPartId == MENU_POPUPSEPARATOR)
 		{
 			RECT rcSep = { rc.left, rc.top + 2, rc.right, rc.top + 3 };
@@ -186,13 +233,13 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 				Clear(hdc, &rcSep);
 
 				HBRUSH hBrush = CreateSolidBrush(g_bIsDarkMode ? POPUP_SEPARATOR_COLOR_DARK : POPUP_SEPARATOR_COLOR_LIGHT);
-				FillRect(hMemDC, &rc, hBrush);
+				FillRect(hMemDC, &rcSep, hBrush);
 				DeleteObject(hBrush);
 
 				//GdiFlush();
-				BufferedPaintSetAlpha(hPaintBuffer, &rc, 0xFF);
+				BufferedPaintSetAlpha(hPaintBuffer, &rcSep, 0xFF);
 			};
-			if (DoBufferedPaint(hdc, &rcSep, f, g_bIsDarkMode ? POPUP_SEPARATOR_OPACITY_DARK : POPUP_SEPARATOR_OPACITY_LIGHT, BPPF_ERASE | 0UL))
+			if (DoBufferedPaint(hdc, &rcSep, f, g_bIsDarkMode ? POPUP_SEPARATOR_OPACITY_DARK : POPUP_SEPARATOR_OPACITY_LIGHT, BPPF_ERASE))
 			{
 				return hr;
 			}
@@ -420,7 +467,7 @@ BOOL WINAPI MenuHooks::MySetMenuInfo(
 			MENUINFO MenuInfo = *lpMenuInfo;
 			HBITMAP hBitmap = CreateDIB(nullptr, 1, 1, (PVOID*)&pvBits);
 
-			if (hBitmap and pvBits)
+			if (hBitmap && pvBits)
 			{
 				SetPixel(pvBits, 0, 0, 0, 0);
 
