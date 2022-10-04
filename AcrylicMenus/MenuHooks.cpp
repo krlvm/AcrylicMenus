@@ -164,7 +164,7 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 			}
 			else
 			{
-				if (iPartId != MENU_POPUPITEM || iStateId != MPI_NORMAL)
+				if (iStateId != MPI_NORMAL)
 				{
 					MyDrawThemeBackground(
 						hTheme,
