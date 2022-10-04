@@ -99,13 +99,6 @@ inline bool VerifyMenuTheme(HTHEME hTheme)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DrawRoundedRect(HDC& hdc, const RECT& rcTarget, const HBRUSH& hBrush)
-{
-	HRGN hRgn = CreateRoundRectRgn(rcTarget.left, rcTarget.top, rcTarget.right + 1, rcTarget.bottom + 1, 8, 8);
-	FillRgn(hdc, hRgn, hBrush);
-	DeleteObject(hRgn);
-}
-
 HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 	HTHEME  hTheme,
 	HDC     hdc,
@@ -230,7 +223,7 @@ HRESULT WINAPI MenuHooks::MyDrawThemeBackground(
 
 			auto f = [&](HDC hMemDC, HPAINTBUFFER hPaintBuffer)
 			{
-				Clear(hdc, &rcSep);
+				Clear(hdc, &rc);
 
 				HBRUSH hBrush = CreateSolidBrush(g_bIsDarkMode ? POPUP_SEPARATOR_COLOR_DARK : POPUP_SEPARATOR_COLOR_LIGHT);
 				FillRect(hMemDC, &rcSep, hBrush);
