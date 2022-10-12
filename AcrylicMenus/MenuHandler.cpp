@@ -5,6 +5,7 @@
 #include "AcrylicHelper.h"
 #include "WindowHelper.h"
 #include "SystemHelper.h"
+#include "SettingsHelper.h"
 #include "AppearanceConfiguration.h"
 
 #define MN_BUTTONDOWN     0x1ED
@@ -68,10 +69,10 @@ void CALLBACK MenuHandler::WinEventProc(
 						DwmSetWindowAttribute(hWnd, DWMWA_BORDER_COLOR, &dwColorBorder, sizeof(COLORREF));
 					}
 				}
-				else if (MENU_REDRAW_BORDER && (!MenuManager::g_bIsDarkMode || WIN10_MENU_REDRAW_BORDER_DARK))
+				else if (MENU_REDRAW_BORDER && (!MenuManager::g_bIsDarkMode || SettingsHelper::g_redrawDarkThemeBorders10))
 				{
 					// We can't draw on non-client area right after window has showed
-					WindowHelper::SendMessageDelayed(hWnd, WM_REDRAWBORDER, 160);
+					WindowHelper::SendMessageDelayed(hWnd, WM_REDRAWBORDER, 160);	
 				}
 			}
 			break;

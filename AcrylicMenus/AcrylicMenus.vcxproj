@@ -174,6 +174,7 @@
     <ClCompile Include="MenuHandler.cpp" />
     <ClCompile Include="amapi.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="SettingsHelper.h" />
     <ClCompile Include="SystemHelper.h" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -34,8 +34,6 @@
 
 ///////////////////////////////////////////////////////
 
-#define WIN10_MENU_REDRAW_BORDER_DARK FALSE
-
 #define WIN11_SET_SMALL_CORNERS FALSE
 #define WIN11_SET_POPUP_BORDERS FALSE
 
