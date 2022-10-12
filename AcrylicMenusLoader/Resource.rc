@@ -26,7 +26,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,4,0
+ PRODUCTVERSION 1,0,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -42,13 +42,13 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "CompanyName", "ALTaleX531, Maplespe, krlvm"
-            VALUE "FileDescription", "AcrylicMenus Loader"
+            VALUE "FileDescription", "AcrylicMenus"
             VALUE "FileVersion", "1.0.0.0"
             VALUE "InternalName", "AcrylicMenusLoader.exe"
             VALUE "LegalCopyright", "Copyright (C) ALTaleX531, Maplespe, 2022, krlvm 2021-2022"
             VALUE "OriginalFilename", "AcrylicMenusLoader.exe"
             VALUE "ProductName", "AcrylicMenus"
-            VALUE "ProductVersion", "1.0.4.0"
+            VALUE "ProductVersion", "1.0.5.0"
         END
     END
     BLOCK "VarFileInfo"
