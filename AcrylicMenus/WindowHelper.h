@@ -33,14 +33,11 @@ namespace WindowHelper
 		MENU_BORDER_ANIMATION_DATA* pData = (MENU_BORDER_ANIMATION_DATA*)lpParameter;
 
 		HBRUSH hbr;
-		int colorValue = 255; // -> 5
-		while (colorValue > 0)
+		for (int colorValue = 255; colorValue > 0; colorValue -= 25) // -> 5
 		{
 			hbr = CreateSolidBrush(RGB(colorValue, colorValue, colorValue));
 			FillRect(pData->wndDC, &pData->wndRect, hbr);
 			DeleteObject(hbr);
-
-			colorValue -= 25;
 			Sleep(1);
 		}
 
@@ -61,7 +58,7 @@ namespace WindowHelper
 			wndRect.bottom - 1
 		);
 
-		if (MenuManager::g_bIsDarkMode && SettingsHelper::g_redrawDarkThemeBorders10Animation)
+		if (MenuManager::g_bIsDarkMode && SettingsHelper::g_redrawDarkThemeBorders10Animation && MenuManager::g_menuOwnerDrawn)
 		{
 			MENU_BORDER_ANIMATION_DATA data = { wndDC, wndRect };
 			HANDLE hThread = CreateThread(NULL, 0, RedrawMenuBorderAnimationThreadProc, &data, 0, NULL);

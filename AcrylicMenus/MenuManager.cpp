@@ -13,6 +13,7 @@ thread_local bool  MenuManager::g_bIsDarkMode     = false;
 thread_local DWORD MenuManager::g_dwBkColor       = NULL;
 thread_local bool  MenuManager::g_bBkColorRefresh = false;
 thread_local bool  MenuManager::g_alphaFixedState = false;
+thread_local bool  MenuManager::g_menuOwnerDrawn = false;
 
 void ApplyAcrylicEffect();
 
@@ -23,6 +24,7 @@ void MenuManager::SetCurrentMenu(HWND hWnd)
 	if (!hWnd)
 	{
 		g_bBkColorRefresh = false;
+		g_menuOwnerDrawn = false;
 	}
 	else if (!g_bBkColorRefresh)
 	{

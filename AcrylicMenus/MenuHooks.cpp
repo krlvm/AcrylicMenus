@@ -449,6 +449,7 @@ BOOL WINAPI MenuHooks::MySetMenuInfo(
 {
 	// Makes Immersive Menu top and bottom frame transparent
 
+	g_menuOwnerDrawn = true;
 	if (SystemHelper::IsTransparencyEnabled())
 	{
 		if ((lpMenuInfo->fMask & MIM_BACKGROUND) && lpMenuInfo->hbrBack)
