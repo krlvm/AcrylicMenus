@@ -8,7 +8,6 @@ namespace AcrylicMenus
 namespace SettingsHelper
 {
     extern bool g_redrawDarkThemeBorders10;
-    extern bool g_redrawDarkThemeBorders10Animation;
 
 	static bool IsFeatureEnabled(LPCWSTR lpRegistryValue)
 	{

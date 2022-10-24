@@ -22,27 +22,6 @@ namespace WindowHelper
 	/// natively using DwmSetWindowAttribute API
 	///
 
-	typedef struct _MENU_BORDER_ANIMATION_DATA
-	{
-		HDC wndDC;
-		RECT wndRect;
-	} MENU_BORDER_ANIMATION_DATA;
-
-	DWORD WINAPI RedrawMenuBorderAnimationThreadProc(LPVOID lpParameter)
-	{
-		MENU_BORDER_ANIMATION_DATA* pData = (MENU_BORDER_ANIMATION_DATA*)lpParameter;
-
-		HBRUSH hbr;
-		for (int colorValue = 255; colorValue > 0; colorValue -= 25) // -> 5
-		{
-			hbr = CreateSolidBrush(RGB(colorValue, colorValue, colorValue));
-			FillRect(pData->wndDC, &pData->wndRect, hbr);
-			DeleteObject(hbr);
-			Sleep(1);
-		}
-
-		return 0;
-	}
 	void RedrawMenuBorder(HWND hWnd)
 	{
 		RECT wndRect;
@@ -58,16 +37,7 @@ namespace WindowHelper
 			wndRect.bottom - 1
 		);
 
-		if (MenuManager::g_bIsDarkMode && SettingsHelper::g_redrawDarkThemeBorders10Animation && MenuManager::g_menuOwnerDrawn)
-		{
-			MENU_BORDER_ANIMATION_DATA data = { wndDC, wndRect };
-			HANDLE hThread = CreateThread(NULL, 0, RedrawMenuBorderAnimationThreadProc, &data, 0, NULL);
-			if (hThread) CloseHandle(hThread);
-		}
-		else
-		{
-			FillRect(wndDC, &wndRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
-		}
+		FillRect(wndDC, &wndRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
 	}
 
 	///

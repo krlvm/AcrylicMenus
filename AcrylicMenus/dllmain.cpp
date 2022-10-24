@@ -8,7 +8,6 @@ using namespace AcrylicMenus;
 HMODULE g_hModule = nullptr;
 bool SystemHelper::g_bIsWindows11 = false;
 bool SettingsHelper::g_redrawDarkThemeBorders10 = false;
-bool SettingsHelper::g_redrawDarkThemeBorders10Animation = false;
 
 BOOL APIENTRY DllMain(
     HMODULE hModule,
@@ -24,7 +23,6 @@ BOOL APIENTRY DllMain(
 			DisableThreadLibraryCalls(hModule);
 			SystemHelper::g_bIsWindows11 = SystemHelper::DetectOSBuildNumber() >= 22000;
 			SettingsHelper::g_redrawDarkThemeBorders10 = SettingsHelper::IsFeatureEnabled(L"RedrawDarkThemeBorders");
-			SettingsHelper::g_redrawDarkThemeBorders10Animation = !SettingsHelper::IsFeatureEnabled(L"RedrawDarkThemeBordersNoAnimation");
 			AcrylicMenus::Startup();
 			break;
 		}

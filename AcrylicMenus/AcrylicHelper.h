@@ -74,7 +74,7 @@ namespace AcrylicHelper
 	typedef struct _ACCENT_POLICY
 	{
 		ACCENT_STATE AccentState;
-		ACCENT_FLAG AccentFlags;
+		DWORD AccentFlags;
 		DWORD dwGradientColor;
 		DWORD dwAnimationId;
 	} ACCENT_POLICY;
@@ -87,7 +87,7 @@ namespace AcrylicHelper
 	{
 		ACCENT_POLICY policy = {
 			ACCENT_ENABLE_ACRYLICBLURBEHIND,
-			SystemHelper::g_bIsWindows11 ? ACCENT_WINDOWS11_LUMINOSITY : ACCENT_BORDER_ALL,
+			ACCENT_WINDOWS11_LUMINOSITY | ACCENT_BORDER_ALL,
 			dwTintColor,
 			0
 		};
