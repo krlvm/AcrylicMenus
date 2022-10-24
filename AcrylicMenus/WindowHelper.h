@@ -136,6 +136,8 @@ namespace WindowHelper
 		UpdateLayeredWindow(hwnd, hdcScreen, &ptDst, &szDst, hdcMemory, &ptSrc, 0, &pBlend, ULW_ALPHA);
 		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
 
+		DeleteObject(bmpMemory);
+
 		DeleteDC(hdcMemory);
 		ReleaseDC(NULL, hdcScreen);
 
