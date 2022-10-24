@@ -22,7 +22,7 @@ Technically, AcrylicMenus supports all Win32 applications, excluding legacy and 
 
 In dark theme, Windows 10 menus have very ugly white borders. It is not possible to prevent them from being painted because they are in the non-client area, but it is possible to override them after some delay, which is already done in light theme, however, doing this to the dark menu causes much more eye attention and looks unpleasant.
 
-So, this functionality is disabled by default, but can be optionally toggled by adding DWORD registry key `RedrawDarkThemeBorders` to `HKEY_CURRENT_USER\SOFTWARE\AcrylicMenus` with value `1`. If you want to disable the transition animation, add the key `RedrawDarkThemeBordersNoAnimation` with value `0` there as well.
+So, this functionality is disabled by default, but can be optionally toggled by adding DWORD registry key `RedrawDarkThemeBorders` to `HKEY_CURRENT_USER\SOFTWARE\AcrylicMenus` with value `1`.
 
 You can do this from command line:
 
