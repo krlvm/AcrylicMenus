@@ -8,39 +8,6 @@ namespace AcrylicMenus
 namespace WindowHelper
 {
 	///
-	/// Windows 10 has ugly white context menu borders
-	/// As the borders are in the non-client area,
-	/// we can't hook the painting event and need
-	/// to redraw them manually
-	/// 
-	/// This is enabled only for light mode menus,
-	/// because it is noticeable, due to low contrast
-	/// between menu background color and original white border,
-	/// but this is very noticeable in dark mode
-	/// 
-	/// On Windows 11, we change borders color
-	/// natively using DwmSetWindowAttribute API
-	///
-
-	void RedrawMenuBorder(HWND hWnd)
-	{
-		RECT wndRect;
-		GetWindowRect(hWnd, &wndRect);
-		OffsetRect(&wndRect, -wndRect.left, -wndRect.top);
-
-		HDC wndDC = GetWindowDC(hWnd);
-
-		ExcludeClipRect(wndDC,
-			wndRect.left + 1,
-			wndRect.top + 1,
-			wndRect.right - 1,
-			wndRect.bottom - 1
-		);
-
-		FillRect(wndDC, &wndRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
-	}
-
-	///
 	/// After user selects option, if menu fade out animation
 	/// is enabled in system settings, system will draw
 	/// the selected item, but its background color alpha value 
@@ -142,38 +109,6 @@ namespace WindowHelper
 		ReleaseDC(NULL, hdcScreen);
 
 		HANDLE hThread = CreateThread(NULL, 0, MenuFadeOutAnimationThreadProc, hwnd, 0, NULL);
-		if (hThread) CloseHandle(hThread);
-	}
-
-	#pragma endregion
-
-	#pragma region Delayed Message
-
-	struct DELAYEDMESSAGEINFO
-	{
-		HWND   hWnd;
-		UINT   uMsg;
-		DWORD  dwDelayMilliseconds;
-	};
-	DWORD WINAPI SendMessageDelayedThreadProc(LPVOID lpParameter)
-	{
-		DELAYEDMESSAGEINFO* info = (DELAYEDMESSAGEINFO*)lpParameter;
-		if (info->dwDelayMilliseconds)
-		{
-			Sleep(info->dwDelayMilliseconds);
-		}
-		SendMessage(info->hWnd, info->uMsg, 0, 0);
-		delete info;
-		return 0;
-	}
-	void SendMessageDelayed(HWND hWnd, UINT uMsg, DWORD dwDelayMilliseconds)
-	{
-		DELAYEDMESSAGEINFO* info = new DELAYEDMESSAGEINFO;
-		info->hWnd = hWnd;
-		info->uMsg = uMsg;
-		info->dwDelayMilliseconds = dwDelayMilliseconds;
-
-		HANDLE hThread = CreateThread(NULL, 0, &SendMessageDelayedThreadProc, info, 0, NULL);
 		if (hThread) CloseHandle(hThread);
 	}
 

@@ -69,11 +69,6 @@ void CALLBACK MenuHandler::WinEventProc(
 						DwmSetWindowAttribute(hWnd, DWMWA_BORDER_COLOR, &dwColorBorder, sizeof(COLORREF));
 					}
 				}
-				else if (MENU_REDRAW_BORDER && (!MenuManager::g_bIsDarkMode || SettingsHelper::g_redrawDarkThemeBorders10))
-				{
-					// We can't draw on non-client area right after window has showed
-					WindowHelper::SendMessageDelayed(hWnd, WM_REDRAWBORDER, 160);	
-				}
 			}
 			break;
 		}
@@ -93,6 +88,8 @@ void CALLBACK MenuHandler::WinEventProc(
 	}
 }
 
+static constexpr int nonClientMarginSize{ 3 };
+static constexpr int systemOutlineSize{ 1 };
 LRESULT CALLBACK MenuHandler::SubclassProc(
 	HWND hWnd,
 	UINT uMsg,
@@ -102,13 +99,66 @@ LRESULT CALLBACK MenuHandler::SubclassProc(
 	DWORD_PTR dwRefData
 )
 {
+	bool handled = false;
+	LRESULT result{ 0 };
+
 	switch (uMsg)
 	{
-	case WM_REDRAWBORDER:
+#if (MENU_REDRAW_BORDER == TRUE)
+	///
+	/// Windows 10 has ugly white context menu borders
+	/// As the borders are in the non-client area,
+	/// we can't hook the painting event and need
+	/// to redraw them manually
+	/// 
+	/// This is enabled only for light mode menus,
+	/// because it is noticeable, due to low contrast
+	/// between menu background color and original white border,
+	/// but this is very noticeable in dark mode
+	/// 
+	/// On Windows 11, we change borders color
+	/// natively using DwmSetWindowAttribute API
+	///
+	case WM_PRINT:
 		{
-			WindowHelper::RedrawMenuBorder(hWnd);
+			handled = true;
+
+			POINT pt;
+
+			HDC wndDC = (HDC)wParam;
+			SaveDC(wndDC);
+
+			RECT rcPaint;
+			GetClipBox(wndDC, &rcPaint);
+			FillRect(wndDC, &rcPaint, GetStockBrush(BLACK_BRUSH));
+
+			SetViewportOrgEx(wndDC, nonClientMarginSize, nonClientMarginSize, &pt);
+			result = DefSubclassProc(hWnd, WM_PRINTCLIENT, wParam, lParam);
+
+			SetViewportOrgEx(wndDC, pt.x, pt.y, nullptr);
+			
+			RestoreDC(wndDC, -1);
 		}
 		break;
+	case WM_NCPAINT:
+		{
+			handled = true;
+
+			HDC wndDC = GetWindowDC(hWnd);
+
+			if (wParam != NULLREGION && wParam != ERROR)
+			{
+				SelectClipRgn(wndDC, reinterpret_cast<HRGN>(wParam));
+			}
+
+			RECT rcPaint;
+			GetClipBox(wndDC, &rcPaint);
+			FillRect(wndDC, &rcPaint, GetStockBrush(BLACK_BRUSH));
+
+			ReleaseDC(hWnd, wndDC);
+		}
+		break;
+#endif
 	case MN_BUTTONUP:
 		{
 			// We need to prevent the system default menu fade out animation
@@ -163,5 +213,10 @@ LRESULT CALLBACK MenuHandler::SubclassProc(
 		break;
 	}
 
-	return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+	if (!handled)
+	{
+		result = DefSubclassProc(hWnd, uMsg, wParam, lParam);
+	}
+
+	return result;
 }
